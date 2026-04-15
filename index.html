@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sustitución Trigonométrica - Clase Interactiva</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .progress-bar {
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .section {
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            color: #764ba2;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        .content {
+            font-size: 1.05em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .concept-box {
+            background-color: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .concept-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .formula {
+            background-color: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .tip-box {
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            color: #155724;
+        }
+        
+        .tip-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .warning-box {
+            background-color: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            color: #721c24;
+        }
+        
+        .example-box {
+            background-color: #e7f3ff;
+            border-left: 5px solid #2196F3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .example-title {
+            font-weight: bold;
+            color: #1565c0;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .step {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background-color: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 10px;
+        }
+        
+        button {
+            background-color: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #764ba2;
+        }
+        
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .quiz-question {
+            background-color: #f9f9f9;
+            border: 2px solid #ddd;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .quiz-question h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .option:hover {
+            background-color: #e8eaf6;
+        }
+        
+        .option input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .exercise-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        
+        .result {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .result.correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+            display: block;
+        }
+        
+        .result.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+            display: block;
+        }
+        
+        .multimedia-app {
+            background-color: #e3f2fd;
+            border: 2px solid #2196F3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .multimedia-app h4 {
+            color: #1565c0;
+            margin-bottom: 10px;
+        }
+        
+        .table-responsive {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #667eea;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .canvas-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+        
+        .practice-section {
+            background-color: #fff3e0;
+            border: 2px solid #ff9800;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .practice-title {
+            font-size: 1.3em;
+            color: #e65100;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .exercise-number {
+            background-color: #ff9800;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .score-tracker {
+            background-color: #eceff1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .score-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .certificate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+            border: 3px solid gold;
+            display: none;
+        }
+        
+        .certificate.show {
+            display: block;
+            animation: slideIn 0.5s ease-in;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .certificate-content {
+            border: 2px solid white;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .certificate-title {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .certificate-subtitle {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            opacity: 0.95;
+        }
+        
+        .certificate-text {
+            font-size: 1.1em;
+            margin: 20px 0;
+            line-height: 1.8;
+        }
+        
+        .certificate-badge {
+            display: inline-block;
+            background-color: gold;
+            color: #667eea;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            margin: 20px 0;
+            font-size: 1.2em;
+        }
+        
+        .certificate-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid white;
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            overflow-x: auto;
+        }
+        
+        .tab-button {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            color: #667eea;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+        
+        .tab-button.active {
+            border-bottom-color: #667eea;
+            color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .completion-badge {
+            display: inline-block;
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px;
+        }
+        
+        .incomplete-badge {
+            display: inline-block;
+            background-color: #9e9e9e;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+            
+            .navigation {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Integración por Sustitución Trigonométrica</h1>
+            <p>Curso Especializado para Ingeniería de Multimedia</p>
+        </header>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <div class="section active" id="section1">
+            <h2>1. Introducción y Conceptos Básicos</h2>
+            
+            <div class="concept-box">
+                <div class="concept-title">¿Qué es la Sustitución Trigonométrica?</div>
+                <p>Es una técnica de integración que utiliza identidades trigonométricas para simplificar integrales que contienen expresiones de la forma √(a² - u²), √(a² + u²) o √(u² - a²). Esta técnica es especialmente útil cuando otras métodos no funcionan.</p>
+            </div>
+            
+            <h3>¿Por qué es importante para Ingeniería Multimedia?</h3>
+            <div class="multimedia-app">
+                <h4>🎬 Aplicaciones en Multimedia:</h4>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>Procesamiento de Imágenes:</strong> Cálculo de áreas en máscaras circulares y elípticas</li>
+                    <li><strong>Animación 3D:</strong> Interpolación de trayectorias curvas y movimiento</li>
+                    <li><strong>Procesamiento de Audio:</strong> Análisis de ondas sinusoidales y contenido de frecuencia</li>
+                    <li><strong>Renderizado:</strong> Cálculo de integrales en efectos de iluminación</li>
+                    <li><strong>Gráficos Computacionales:</strong> Geometría de curvas paramétricas</li>
+                </ul>
+            </div>
+            
+            <h3>Requisitos Previos</h3>
+            <div class="tip-box">
+                <div class="tip-title">📌 Debes recordar:</div>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Identidades trigonométricas fundamentales</li>
+                    <li>Derivación e integración básica</li>
+                    <li>Método de cambio de variable (u-sustitución)</li>
+                    <li>Trigonometría de triángulos rectángulos</li>
+                </ul>
+            </div>
+            
+            <h3>Identidades Trigonométricas Clave</h3>
+            <div class="formula">
+                sin²θ + cos²θ = 1<br>
+                sec²θ - tan²θ = 1<br>
+                csc²θ - cot²θ = 1<br>
+                1 + tan²θ = sec²θ
+            </div>
+            
+            <div class="navigation">
+                <button disabled>← Anterior</button>
+                <button onclick="goToSection(2)">Siguiente →</button>
+            </div>
+        </div>
+        
+        <!-- SECCIÓN 2: TRES CASOS PRINCIPALES -->
+        <div class="section" id="section2">
+            <h2>2. Los Tres Casos de Sustitución Trigonométrica</h2>
+            
+            <p class="content">Existen tres casos principales según el tipo de expresión bajo la raíz cuadrada. Cada caso tiene una sustitución específica y un triángulo de referencia.</p>
+            
+            <h3>Caso 1: Expresiones con √(a² - u²)</h3>
+            
+            <div class="concept-box">
+                <div class="concept-title">Cuando aparece: √(a² - u²)</div>
+                <p><strong>Sustitución recomendada:</strong> u = a sen θ</p>
+                <p><strong>Triángulo de referencia:</strong></p>
+                <pre style="background: #f5f5f5; padding: 10px; border-radius: 5px;">
+        θ
+       /|
+      / |
+     /  | √(a² - u²) = a cos θ
+    /   |
+   /    |
+  /_____|
+ u     a
+ </pre>
+                <p><strong>Identidad clave:</strong> √(a² - u²) = a cos θ</p>
+                <p><strong>Dominio:</strong> -a ≤ u ≤ a</p>
+            </div>
+            
+            <div class="example-box">
+                <div class="example-title">Ejemplo - Caso 1</div>
+                <p>∫ 1/√(4 - x²) dx</p>
+                <p><strong>Identificación:</strong> a² = 4, entonces a = 2</p>
+                <p><strong>Sustitución:</strong> x = 2 sen θ, dx = 2 cos θ dθ</p>
+                <p><strong>Simplificación:</strong> √(4 - x²) = 2 cos θ</p>
+                <p><strong>Integral resulta:</strong> ∫ 1/2cos θ · 2cos θ dθ = ∫ dθ = θ + C = arcsen(x/2) + C</p>
+            </div>
+            
+            <h3>Caso 2: Expresiones con √(a² + u²)</h3>
+            
+            <div class="concept-box">
+                <div class="concept-title">Cuando aparece: √(a² + u²)</div>
+                <p><strong>Sustitución recomendada:</strong> u = a tan θ</p>
+                <p><strong>Triángulo de referencia:</strong></p>
+                <pre style="background: #f5f5f5; padding: 10px; border-radius: 5px;">
+      √(a² + u²) = a sec θ
+       /|
+      / |
+     /  | u = a tan θ
+    /   |
+   /    |
+  /_____|
+        a
+                </pre>
+                <p><strong>Identidad clave:</strong> √(a² + u²) = a sec θ</p>
+                <p><strong>Dominio:</strong> todos los números reales</p>
+            </div>
+            
+            <h3>Caso 3: Expresiones con √(u² - a²)</h3>
+            
+            <div class="concept-box">
+                <div class="concept-title">Cuando aparece: √(u² - a²)</div>
+                <p><strong>Sustitución recomendada:</strong> u = a sec θ</p>
+                <p><strong>Triángulo de referencia:</strong></p>
+                <pre style="background: #f5f5f5; padding: 10px; border-radius: 5px;">
+      u = a sec θ
+       /|
+      / |
+     /  | √(u² - a²) = a tan θ
+    /   |
+   /    |
+  /_____|
+        a
+                </pre>
+                <p><strong>Identidad clave:</strong> √(u² - a²) = a tan θ</p>
+                <p><strong>Dominio:</strong> u ≥ a o u ≤ -a</p>
+            </div>
+            
+            <div class="warning-box">
+                <div class="tip-title">⚠️ Punto Importante:</div>
+                <p>Los límites de θ son críticos. Para el Caso 1: -π/2 ≤ θ ≤ π/2. Para el Caso 2: -π/2 < θ < π/2. Para el Caso 3: 0 ≤ θ < π/2 o π ≤ θ < 3π/2.</p>
+            </div>
+            
+            <h3>Tabla Resumen de Casos</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Expresión</th>
+                            <th>Sustitución</th>
+                            <th>Simplificación</th>
+                            <th>Rango de θ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>√(a² - u²)</td>
+                            <td>u = a sen θ</td>
+                            <td>√(a² - u²) = a cos θ</td>
+                            <td>[-π/2, π/2]</td>
+                        </tr>
+                        <tr>
+                            <td>√(a² + u²)</td>
+                            <td>u = a tan θ</td>
+                            <td>√(a² + u²) = a sec θ</td>
+                            <td>(-π/2, π/2)</td>
+                        </tr>
+                        <tr>
+                            <td>√(u² - a²)</td>
+                            <td>u = a sec θ</td>
+                            <td>√(u² - a²) = a tan θ</td>
+                            <td>[0, π/2) ∪ [π, 3π/2)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="navigation">
+                <button onclick="goToSection(1)">← Anterior</button>
+                <button onclick="goToSection(3)">Siguiente →</button>
+            </div>
+        </div>
+        
+        <!-- SECCIÓN 3: PROCEDIMIENTO PASO A PASO -->
+        <div class="section" id="section3">
+            <h2>3. Procedimiento Paso a Paso</h2>
+            
+            <p class="content">Aquí aprenderás el proceso sistemático para resolver integrales con sustitución trigonométrica.</p>
+            
+            <h3>Los 7 Pasos Fundamentales</h3>
+            
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Identifica el tipo de expresión radical</strong>
+                <p style="margin-top: 10px;">Determina si tiene la forma √(a² - u²), √(a² + u²) o √(u² - a²). Esto define qué sustitución usar.</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Determina los valores de a y u</strong>
+                <p style="margin-top: 10px;">Reescribe la expresión en forma estándar. Por ejemplo, √(9 - x²) = √(3² - x²), entonces a = 3 y u = x.</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Aplica la sustitución trigonométrica</strong>
+                <p style="margin-top: 10px;">Reemplaza u por la expresión trigonométrica correspondiente y calcula du.</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-number">4</span>
+                <strong>Simplifica la expresión radical</strong>
+                <p style="margin-top: 10px;">Usa la identidad trigonométrica apropiada para eliminar la raíz cuadrada.</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-number">5</span>
+                <strong>Sustituye en la integral original</strong>
+                <p style="margin-top: 10px;">Reemplaza todos los términos de x con términos de θ, incluyendo dx.</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-number">6</span>
+                <strong>Integra respecto a θ</strong>
+                <p style="margin-top: 10px;">Resuelve la integral trigonométrica resultante usando técnicas trigonométricas estándar.</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-number">7</span>
+                <strong>Vuelve a la variable original</strong>
+                <p style="margin-top: 10px;">Usa el triángulo de referencia para convertir el resultado de vuelta a x. Puede ser necesario usar arcsen, arctan o arcsec.</p>
+            </div>
+            
+            <h3>Ejemplo Completo Detallado</h3>
+            
+            <div class="example-box">
+                <div class="example-title">Resuelve: ∫ x²/√(9 - x²) dx</div>
+                
+                <p><strong>Paso 1: Identificar</strong></p>
+                <p>Tenemos √(9 - x²), que es de la forma √(a² - u²)</p>
+                
+                <p><strong>Paso 2: Determinar a y u</strong></p>
+                <p>a² = 9 → a = 3, u = x</p>
+                
+                <p><strong>Paso 3: Sustitución</strong></p>
+                <p>x = 3 sen θ<br>
+                dx = 3 cos θ dθ</p>
+                
+                <p><strong>Paso 4: Simplificar radical</strong></p>
+                <p>√(9 - x²) = √(9 - 9sen²θ) = 3√(1 - sen²θ) = 3 cos θ</p>
+                
+                <p><strong>Paso 5: Sustituir en la integral</strong></p>
+                <p>∫ (3senθ)²/(3cosθ) · 3cosθ dθ = ∫ 9sen²θ dθ</p>
+                
+                <p><strong>Paso 6: Integrar</strong></p>
+                <p>Usa la identidad: sen²θ = (1 - cos 2θ)/2</p>
+                <p>∫ 9 · (1 - cos 2θ)/2 dθ = (9/2)[θ - (sen 2θ)/2] + C</p>
+                <p>= (9/2)θ - (9/4)sen 2θ + C</p>
+                <p>= (9/2)θ - (9/2)sen θ cos θ + C</p>
+                
+                <p><strong>Paso 7: Volver a x</strong></p>
+                <p>Del triángulo: sen θ = x/3, cos θ = √(9-x²)/3, θ = arcsen(x/3)</p>
+                <p><strong>Resultado Final:</strong></p>
+                <p style="background: #fff3cd; padding: 10px; border-radius: 5px;">
+                    <strong>(9/2)arcsen(x/3) - (x√(9-x²))/2 + C</strong>
+                </p>
+            </div>
+            
+            <h3>Consejos y Trucos Especiales</h3>
+            
+            <div class="tip-box">
+                <div class="tip-title">💡 Tips para Success</div>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>Dibuja siempre el triángulo:</strong> Te ayuda a visualizar las relaciones y evitar errores</li>
+                    <li><strong>Verifica tu sustitución:</strong> Antes de continuar, confirma que u = a sen θ (o tan θ, sec θ)</li>
+                    <li><strong>No olvides du:</strong> Siempre calcula la derivada para obtener dx en términos de dθ</li>
+                    <li><strong>Simplifica antes de integrar:</strong> Una integral más simple es más fácil de resolver</li>
+                    <li><strong>Usa identidades trigonométricas:</strong> Memoriza las más comunes para ahorrar tiempo</li>
+                    <li><strong>Verifica tu respuesta:</strong> Deriva el resultado para confirmar que obtienes el integrando original</li>
+                </ul>
+            </div>
+            
+            <div class="navigation">
+                <button onclick="goToSection(2)">← Anterior</button>
+                <button onclick="goToSection(4)">Siguiente →</button>
+            </div>
+        </div>
+        
+        <!-- SECCIÓN 4: APLICACIONES EN MULTIMEDIA -->
+        <div class="section" id="section4">
+            <h2>4. Aplicaciones en Ingeniería de Multimedia</h2>
+            
+            <p class="content">Descubre cómo la sustitución trigonométrica se utiliza en proyectos reales de multimedia.</p>
+            
+            <h3>Aplicación 1: Procesamiento de Imágenes - Cálculo de Áreas Circulares</h3>
+            
+            <div class="multimedia-app">
+                <h4>🎨 Maskcaras Circulares</h4>
+                <p>Al trabajar con máscaras circulares en edición de imágenes, necesitas calcular el área dentro del círculo de radio a. Esta requiere resolver:</p>
+                <div class="formula">
+                    A = ∫∫ dA = 4 ∫₀ᵃ √(a² - x²) dx
+                </div>
+                <p><strong>Solución:</strong> Usando sustitución trigonométrica con x = a sen θ:</p>
+                <p style="background: #f0f0f0; padding: 10px; border-radius: 5px;">
+                    A = 4a² ∫₀^(π/2) cos²θ dθ = πa²
+                </p>
+                <p><strong>Aplicación práctica:</strong> Para una máscara circular de radio 100 píxeles, el área cubierta es π(100)² ≈ 31,416 píxeles²</p>
+            </div>
+            
+            <h3>Aplicación 2: Renderizado 3D - Iluminación Hemisférica</h3>
+            
+            <div class="multimedia-app">
+                <h4>💡 Integración de Intensidad de Luz</h4>
+                <p>El cálculo de iluminación hemisférica requiere integrar la contribución de luz de todas las direcciones sobre una superficie. Esto implica:</p>
+                <div class="formula">
+                    L = ∫∫ L₀ √(r² - d²) cos θ dΩ
+                </div>
+                <p><strong>Ejemplo:</strong> Para luces suave (soft lighting), necesitas resolver integrales como:</p>
+                <p style="background: #f0f0f0; padding: 10px; border-radius: 5px;">
+                    ∫ √(R² - x²) dx donde R es el radio de la luz
+                </p>
+                <p><strong>Uso:</strong> Cálculos más precisos de sombras difusas y reflexiones</p>
+            </div>
+            
+            <h3>Aplicación 3: Procesamiento de Audio - Análisis Armónico</h3>
+            
+            <div class="multimedia-app">
+                <h4>🎵 Integral de Energía de Frecuencia</h4>
+                <p>Al analizar el contenido frecuencial de audio, necesitas resolver:</p>
+                <div class="formula">
+                    E = ∫ |F(ω)|² √(ω₀² + ω²) dω
+                </div>
+                <p><strong>Aplicación:</strong> Esta integral se resuelve con la sustitución ω = ω₀ tan θ</p>
+                <p>Resultado: Análisis preciso de energía de audio para ecualización y efectos</p>
+            </div>
+            
+            <h3>Aplicación 4: Animación - Trayectorias Paramétricas Suave</h3>
+            
+            <div class="multimedia-app">
+                <h4>🎬 Longitud de Arco y Movimiento Suave</h4>
+                <p>Para crear animaciones suave (motion blur, easing functions), necesitas calcular la longitud de arco:</p>
+                <div class="formula">
+                    L = ∫ √(1 + (dy/dx)²) dx
+                </div>
+                <p><strong>Ejemplo:</strong> Para una trayectoria parabólica y = x², obtienes:</p>
+                <p style="background: #f0f0f0; padding: 10px; border-radius: 5px;">
+                    L = ∫ √(1 + 4x²) dx
+                </p>
+                <p><strong>Solución:</strong> Con u = 2x, a = 1, usas u = a tan θ</p>
+            </div>
+            
+            <h3>Aplicación 5: Gráficos Computacionales - Área bajo Curvas Elípticas</h3>
+            
+            <div class="multimedia-app">
+                <h4>🖼️ Transformaciones Elípticas</h4>
+                <p>Las elipses aparecen constantemente en gráficos (óvalos, elipses en perspectiva). Para calcular el área:</p>
+                <div class="formula">
+                    A = ∫∫ dA = πab (donde a y b son los semiejes)
+                </div>
+                <p><strong>Derivación:</strong> Requiere resolver ∫ √(a² - x²) dx dos veces</p>
+                <p><strong>Uso en código:</strong> Precalcular áreas para detección de colisiones y mapeo de texturas</p>
+            </div>
+            
+            <h3>Tabla Comparativa: Casos de Uso</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Área</th>
+                            <th>Tipo de Integral</th>
+                            <th>Caso de Sustitución</th>
+                            <th>Ejemplo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Imágenes</td>
+                            <td>∫ √(a² - x²) dx</td>
+                            <td>Caso 1</td>
+                            <td>Máscaras circulares</td>
+                        </tr>
+                        <tr>
+                            <td>Audio</td>
+                            <td>∫ √(a² + x²) dx</td>
+                            <td>Caso 2</td>
+                            <td>Análisis frecuencial</td>
+                        </tr>
+                        <tr>
+                            <td>Animación</td>
+                            <td>∫ √(1 + 4x²) dx</td>
+                            <td>Caso 2</td>
+                            <td>Longitud de arco</td>
+                        </tr>
+                        <tr>
+                            <td>Renderizado</td>
+                            <td>∫ √(R² - x²) dx</td>
+                            <td>Caso 1</td>
+                            <td>Iluminación</td>
+                        </tr>
+                        <tr>
+                            <td>Gráficos</td>
+                            <td>∫ √(a² - b²x²) dx</td>
+                            <td>Caso 1</td>
+                            <td>Áreas elípticas</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="navigation">
+                <button onclick="goToSection(3)">← Anterior</button>
+                <button onclick="goToSection(5)">Siguiente →</button>
+            </div>
+        </div>
+        
+        <!-- SECCIÓN 5: CUESTIONARIO DE COMPRENSIÓN -->
+        <div class="section" id="section5">
+            <h2>5. Evaluación de Comprensión</h2>
+            
+            <p class="content">Antes de pasar a los ejercicios prácticos, responde estas preguntas para verificar tu comprensión del tema.</p>
+            
+            <div class="quiz-question">
+                <h4>Pregunta 1: ¿Cuál es la sustitución correcta para √(25 - x²)?</h4>
+                <label class="option">
+                    <input type="radio" name="q1" value="a">
+                    x = 5 tan θ
+                </label>
+                <label class="option">
+                    <input type="radio" name="q1" value="b">
+                    x = 5 sen θ
+                </label>
+                <label class="option">
+                    <input type="radio" name="q1" value="c">
+                    x = 5 sec θ
+                </label>
+                <label class="option">
+                    <input type="radio" name="q1" value="d">
+                    x = sen θ / 5
+                </label>
+                <button onclick="checkAnswer('q1', 'b', 'Para √(a² - u²), usamos u = a sen θ. Aquí a = 5, u = x, así que x = 5 sen θ')">Verificar</button>
+                <div class="result" id="result1"></div>
+            </div>
+            
+            <div class="quiz-question">
+                <h4>Pregunta 2: Si x = 3 tan θ, ¿cuál es dx?</h4>
+                <label class="option">
+                    <input type="radio" name="q2" value="a">
+                    dx = 3 sec² θ dθ
+                </label>
+                <label class="option">
+                    <input type="radio" name="q2" value="b">
+                    dx = 3 cos² θ dθ
+                </label>
+                <label class="option">
+                    <input type="radio" name="q2" value="c">
+                    dx = -3 sec² θ dθ
+                </label>
+                <label class="option">
+                    <input type="radio" name="q2" value="d">
+                    dx = 3 tan θ dθ
+                </label>
+                <button onclick="checkAnswer('q2', 'a', 'Derivando x = 3 tan θ: dx/dθ = 3 sec² θ, entonces dx = 3 sec² θ dθ')">Verificar</button>
+                <div class="result" id="result2"></div>
+            </div>
+            
+            <div class="quiz-question">
+                <h4>Pregunta 3: Si u = a sec θ, ¿cuál es la expresión para √(u² - a²)?</h4>
+                <label class="option">
+                    <input type="radio" name="q3" value="a">
+                    a tan θ
+                </label>
+                <label class="option">
+                    <input type="radio" name="q3" value="b">
+                    a sin θ
+                </label>
+                <label class="option">
+                    <input type="radio" name="q3" value="c">
+                    a cos θ
+                </label>
+                <label class="option">
+                    <input type="radio" name="q3" value="d">
+                    a cot θ
+                </label>
+                <button onclick="checkAnswer('q3', 'a', 'Para √(u² - a²) donde u = a sec θ, usamos la identidad sec²θ - 1 = tan²θ, entonces √(u² - a²) = a tan θ')">Verificar</button>
+                <div class="result" id="result3"></div>
+            </div>
+            
+            <div class="quiz-question">
+                <h4>Pregunta 4: ¿En qué aplicación multimedia se usa √(a² - x²)?</h4>
+                <label class="option">
+                    <input type="radio" name="q4" value="a">
+                    Máscaras circulares en procesamiento de imágenes
+                </label>
+                <label class="option">
+                    <input type="radio" name="q4" value="b">
+                    Análisis de frecuencia de audio
+                </label>
+                <label class="option">
+                    <input type="radio" name="q4" value="c">
+                    Longitud de arco en animación
+                </label>
+                <label class="option">
+                    <input type="radio" name="q4" value="d">
+                    Deformación elíptica
+                </label>
+                <button onclick="checkAnswer('q4', 'a', 'Las máscaras circulares requieren calcular áreas bajo √(a² - x²), que es el área de un círculo')">Verificar</button>
+                <div class="result" id="result4"></div>
+            </div>
+            
+            <div class="navigation">
+                <button onclick="goToSection(4)">← Anterior</button>
+                <button onclick="goToSection(6)">Siguiente →</button>
+            </div>
+        </div>
+        
+        <!-- SECCIÓN 6: EJERCICIOS PRÁCTICOS -->
+        <div class="section" id="section6">
+            <h2>6. Ejercicios Prácticos - Aplicaciones en Multimedia</h2>
+            
+            <p class="content">Ahora aplicarás lo aprendido en 10 ejercicios específicos para Ingeniería de Multimedia. Debes obtener al menos 8/10 para recibir el certificado. ¡Adelante!</p>
+            
+            <div class="score-tracker">
+                <div>Puntuación Actual:</div>
+                <div class="score-number" id="scoreDisplay">0/10</div>
+            </div>
+            
+            <!-- Ejercicio 1 -->
+            <div class="practice-section">
+                <span class="exercise-number">Ejercicio 1</span>
+                <h4>Procesamiento de Imágenes: Área de Máscara Circular</h4>
+                <p>Una imagen tiene una máscara circular de radio 8 píxeles. Necesitas calcular el área exacta que cubre. Resuelve:</p>
+                <div class="formula">
+                    A = ∫₀⁸ 2√(64 - x²) dx
+                </div>
+                <p>¿Cuál es el resultado?</p>
+                <input type="text" class="exercise-input" id="ex1" placeholder="Respuesta (formato: número con π, ej: 32π)">
+                <button onclick="checkExercise(1, '32π')">Verificar</button>
+                <div class="result" id="ex1Result"></div>
+            </div>
+            
+            <!-- Ejercicio 2 -->
+            <div class="practice-section">
+                <span class="exercise-number">Ejercicio 2</span>
+                <h4>Renderizado 3D: Intensidad de Luz</h4>
+                <p>Para iluminación suave, calculas:</p>
+                <div class="formula">
+                    ∫₀^(5) √(25 + x²) dx
+                </div>
+                <p>¿Cuál es el método más apropiado?</p>
+                <select class="exercise-input" id="ex2">
+                    <option value="">Selecciona una respuesta</option>
+                    <option value="x = 5 tan θ">x = 5 tan θ (Caso 2: √(a² + u²))</option>
+                    <option value="x = 5 sen θ">x = 5 sen θ (Caso 1: √(a² - u²))</option>
+                    <option value="x = 5 sec θ">x = 5 sec θ (Caso 3: √(u² - a²))</option>
+                    <option value="Integración por partes">Integración por partes</option>
+                </select>
+                <button onclick="checkExercise(2, 'x = 5 tan θ')">Verificar</button>
+                <div class="result" id="ex2Result"></div>
+            </div>
+            
+            <!-- Ejercicio 3 -->
+            <div class="practice-section">
+                <span class="exercise-number">Ejercicio 3</span>
+                <h4>Procesamiento de Audio: Energía Armónica</h4>
+                <p>Integra respecto a θ después de sustituir x = 4 sen θ en:</p>
+                <div class="formula">
+                    ∫ √(16 - x²) dx
+                </div>
+                <p>¿Cuál es la integral resultante en términos de θ?</p>
+                <select class="exercise-input" id="ex3">
+                    <option value="">Selecciona una respuesta</option>
+                    <option value="∫ 4 cos² θ dθ">∫ 4 cos² θ dθ</option>
+                    <option value="∫ 16 cos² θ dθ">∫ 16 cos² θ dθ</option>
+                    <option value="∫ 4 sen² θ dθ">∫ 4 sen² θ dθ</option>
+                    <option value="∫ cos² θ dθ">∫ cos² θ dθ</option>
+                </select>
+                <button onclick="checkExercise(3, '∫ 16 cos² θ dθ')">Verificar</button>
+                <div class="result" id="ex3Result"></div>
+            </div>
+            
+            <!-- Ejercicio 4 -->
+            <div class="practice-section">
+                <span class="exercise-number">Ejercicio 4</span>
+                <h4>Animación: Longitud de Arco</h4>
+                <p>Para una trayectoria de movimiento, calculas la longitud del arco:</p>
+                <div class="formula">
+                    ∫₀^(3) √(1 + 4x²) dx
+                </div>
+                <p>¿Qué valor toman a y u en la sustitución?</p>
+                <input type="text" class="exercise-input" id="ex4" placeholder="Respuesta (formato: a=?, u=?, ej: a=1, u=2x)">
+                <button onclick="checkExercise(4, 'a=1, u=2x')">Verificar</button>
+                <div class="result" id="ex4Result"></div>
+            </div>
+            
+            <!-- Ejercicio 5 -->
+            <div class="practice-section">
+                <span class="exercise-number">Ejercicio 5</span>
+                <h4>Gráficos Computacionales: Distorsión Elíptica</h4>
+                <p>Para transformación elíptica, resuelves:</p>
+                <div class="formula">
+                    ∫₀^(2) x²/√(4 - x²) dx
+                </div>
+                <p>Después de sustituir x = 2 sen θ, ¿cuál es la integral simplificada?</p>
+                <select class="exercise-input" id="ex5">
+                    <option value="">Selecciona una respuesta</option>
+                    <option value="∫ 4 sen² θ dθ">∫ 4 sen² θ dθ</option>
+                    <option value="∫ 2 sen² θ dθ">∫ 2 sen² θ dθ</option>
+                    <option value="∫ 4 sen² θ cos² θ dθ">∫ 4 sen² θ cos² θ dθ</option>
+                    <option value="∫ sen² θ dθ">∫ sen² θ dθ</option>
+                </select>
+                <button onclick="checkExercise(5, '∫ 4 sen² θ dθ')">Verificar</button>
+                <div class="result" id="ex5Result"></div>
+            </div>
+            
+            <!-- Ejercicio 6 -->
+            <div class="practice-section">
+                <span class="exercise-number">Ejercicio 6</span>
+                <h4>Máscaras de Efecto: Área Semicircular</h4>
+                <p>Calcula el área bajo la curva:</p>
+                <div class="formula">
+                    A = ∫₀^(r) √(r² - x²) dx
+                </div>
+                <p>¿Cuál es el resultado?</p>
+                <select class="exercise-input" id="ex6">
+                    <option value="">Selecciona una respuesta</option>
+                    <option value="πr²/2">πr²/2</option>
+                    <option value="πr²">πr²</option>
+                    <option value="πr²/4">πr²/4</option>
+                    <option value="r²">r²</option>
+                </select>
+                <button onclick="checkExercise(6, 'πr²/2')">Verificar</button>
+                <div class="result" id="ex6Result"></div>
+            </div>
+            
+            <!-- Ejercicio 7 -->
+            <div class="practice-section">
+                <span class="exercise-number">Ejercicio 7</span>
+                <h4>Análisis de Onda: Integral Trigonométrica</h4>
+                <p>Para análisis de audio, necesitas resolver:</p>
+                <div class="formula">
+                    ∫ 1/√(9 + x²) dx
+                </div>
+                <p>Identifica qué pasos son correctos (marca todos los correctos):</p>
+                <label class="option">
+                    <input type="checkbox" name="q7" value="a">
+                    Paso 1: Se identifica como Caso 2 (√(a² + u²))
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="q7" value="b">
+                    Paso 2: a = 3, u = x, sustitución x = 3 tan θ
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="q7" value="c">
+                    Paso 3: √(9 + x²) = 3 sec θ
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="q7" value="d">
+                    Paso 4: Resultado = arctan(x/3) + C
+                </label>
+                <button onclick="checkExerciseMultiple(7, ['a', 'b', 'c', 'd'])">Verificar</button>
+                <div class="result" id="ex7Result"></div>
+            </div>
+            
+            <!-- Ejercicio 8 -->
+            <div class="practice-section">
+                <span class="exercise-number">Ejercicio 8</span>
+                <h4>Deformación Radial: Área de Corona Circular</h4>
+                <p>Encuentra el área entre dos círculos (r₁ = 3, r₂ = 5):</p>
+                <div class="formula">
+                    A = ∫₀^(5) 2√(25 - x²) dx - ∫₀^(3) 2√(9 - x²) dx
+                </div>
+                <p>¿Cuál es el resultado?</p>
+                <input type="text" class="exercise-input" id="ex8" placeholder="Respuesta (formato: número, ej: 16π)">
+                <button onclick="checkExercise(8, '16π')">Verificar</button>
+                <div class="result" id="ex8Result"></div>
+            </div>
+            
+            <!-- Ejercicio 9 -->
+            <div class="practice-section">
+                <span class="exercise-number">Ejercicio 9</span>
+                <h4>Interpolación de Splines: Curvatura</h4>
+                <p>Para una curva de Bezier, la curvatura requiere resolver:</p>
+                <div class="formula">
+                    ∫₀^(1) 1/√(1 - 4x²) dx
+                </div>
+                <p>¿Cuál es el resultado numérico aproximado?</p>
+                <input type="text" class="exercise-input" id="ex9" placeholder="Respuesta (ej: 1.047, redondeado a 3 decimales)">
+                <button onclick="checkExercise(9, '1.047', 0.01)">Verificar</button>
+                <div class="result" id="ex9Result"></div>
+            </div>
+            
+            <!-- Ejercicio 10 -->
+            <div class="practice-section">
+                <span class="exercise-number">Ejercicio 10</span>
+                <h4>Síntesis de Frecuencia: Transformada Integral</h4>
+                <p>En procesamiento de señales, resuelves:</p>
+                <div class="formula">
+                    ∫ x/√(x² - 4) dx
+                </div>
+                <p>Selecciona el resultado correcto:</p>
+                <select class="exercise-input" id="ex10">
+                    <option value="">Selecciona una respuesta</option>
+                    <option value="√(x² - 4) + C">√(x² - 4) + C</option>
+                    <option value="arcsec(x/2) + C">arcsec(x/2) + C</option>
+                    <option value="2 arcsec(x/2) + C">2 arcsec(x/2) + C</option>
+                    <option value="(1/2)√(x² - 4) + C">(1/2)√(x² - 4) + C</option>
+                </select>
+                <button onclick="checkExercise(10, '√(x² - 4) + C')">Verificar</button>
+                <div class="result" id="ex10Result"></div>
+            </div>
+            
+            <div class="navigation">
+                <button onclick="goToSection(5)">← Anterior</button>
+                <button onclick="generateCertificateCheck()">Enviar y Ver Resultado →</button>
+            </div>
+        </div>
+        
+        <!-- SECCIÓN 7: CERTIFICADO -->
+        <div class="section" id="section7">
+            <div class="certificate" id="certificate">
+                <div class="certificate-content">
+                    <div class="certificate-title">🏆 CERTIFICADO DE LOGRO</div>
+                    <div class="certificate-subtitle">Integración por Sustitución Trigonométrica</div>
+                    
+                    <div class="certificate-text">
+                        <p>Se certifica que</p>
+                        <p style="font-size: 1.4em; font-weight: bold; margin: 20px 0;">INGENIERO/A DE MULTIMEDIA</p>
+                        <p>ha completado exitosamente el curso</p>
+                    </div>
+                    
+                    <div class="certificate-text">
+                        <p><strong>"Método de Integración por Sustitución Trigonométrica"</strong></p>
+                        <p style="margin-top: 20px;">Demostrando dominio en:</p>
+                        <ul style="list-style: none; margin: 15px 0;">
+                            <li>✓ Identificación de los tres casos de sustitución trigonométrica</li>
+                            <li>✓ Aplicación correcta de procedimientos paso a paso</li>
+                            <li>✓ Resolución de integrales complejas</li>
+                            <li>✓ Implementación en proyectos multimedia reales</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="certificate-badge" id="scoreDisplay2">8/10</div>
+                    
+                    <div class="certificate-text">
+                        <p>Obtenida una calificación de <strong id="scoreText">8 de 10 (80%)</strong></p>
+                        <p style="font-size: 0.95em; opacity: 0.9;">Cumpliendo con los requisitos mínimos de 80% de aprobación</p>
+                    </div>
+                    
+                    <div class="certificate-footer">
+                        <p>Emitido el: <strong id="dateDisplay">9 de abril de 2026</strong></p>
+                        <p>Plataforma Educativa Interactiva de Ingeniería Multimedia</p>
+                        <p style="margin-top: 10px; font-size: 0.9em;">Este certificado reconoce el dominio demostrado en técnicas avanzadas de cálculo integral aplicadas al multimedia</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px; text-align: center;">
+                <button onclick="printCertificate()">🖨️ Imprimir Certificado</button>
+                <button onclick="downloadCertificate()">📥 Descargar Certificado</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let score = 0;
+        let answeredQuestions = new Set();
+        
+        function goToSection(sectionNumber) {
+            // Ocultar todas las secciones
+            for (let i = 1; i <= 7; i++) {
+                const section = document.getElementById('section' + i);
+                if (section) section.classList.remove('active');
+            }
+            
+            // Mostrar la sección solicitada
+            const targetSection = document.getElementById('section' + sectionNumber);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                window.scrollTo(0, 0);
+            }
+            
+            // Actualizar barra de progreso
+            updateProgressBar(sectionNumber);
+        }
+        
+        function updateProgressBar(currentSection) {
+            const progress = (currentSection / 7) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+        
+        function checkAnswer(questionId, correctAnswer, explanation) {
+            const selected = document.querySelector('input[name="' + questionId + '"]:checked');
+            const resultDiv = document.getElementById('result' + questionId.substring(1));
+            
+            if (!selected) {
+                resultDiv.className = 'result incorrect';
+                resultDiv.innerHTML = '⚠️ Debes seleccionar una respuesta';
+                return;
+            }
+            
+            if (selected.value === correctAnswer) {
+                resultDiv.className = 'result correct';
+                resultDiv.innerHTML = '✓ ¡Correcto! ' + explanation;
+            } else {
+                resultDiv.className = 'result incorrect';
+                resultDiv.innerHTML = '✗ Incorrecto. ' + explanation;
+            }
+        }
+        
+        function checkExercise(exerciseNumber, correctAnswer, tolerance = 0) {
+            const input = document.getElementById('ex' + exerciseNumber);
+            const resultDiv = document.getElementById('ex' + exerciseNumber + 'Result');
+            const userAnswer = input.value.trim();
+            
+            if (!userAnswer) {
+                resultDiv.className = 'result incorrect';
+                resultDiv.innerHTML = '⚠️ Debes proporcionar una respuesta';
+                return;
+            }
+            
+            let isCorrect = false;
+            
+            if (tolerance > 0) {
+                // Para respuestas numéricas aproximadas
+                const userNum = parseFloat(userAnswer);
+                const correctNum = parseFloat(correctAnswer);
+                isCorrect = Math.abs(userNum - correctNum) <= tolerance;
+            } else {
+                // Para respuestas exactas
+                isCorrect = userAnswer.toLowerCase() === correctAnswer.toLowerCase();
+            }
+            
+            if (isCorrect) {
+                resultDiv.className = 'result correct';
+                resultDiv.innerHTML = '✓ ¡Correcto! Excelente trabajo.';
+                
+                if (!answeredQuestions.has(exerciseNumber)) {
+                    score++;
+                    answeredQuestions.add(exerciseNumber);
+                    updateScore();
+                }
+            } else {
+                resultDiv.className = 'result incorrect';
+                resultDiv.innerHTML = '✗ Incorrecto. La respuesta correcta es: <strong>' + correctAnswer + '</strong><br>Revisa el procedimiento y vuelve a intentar.';
+            }
+        }
+        
+        function checkExerciseMultiple(exerciseNumber, correctAnswers) {
+            const checkboxes = document.querySelectorAll('input[name="q' + exerciseNumber + '"]:checked');
+            const resultDiv = document.getElementById('ex' + exerciseNumber + 'Result');
+            
+            const selected = Array.from(checkboxes).map(cb => cb.value);
+            
+            if (selected.length === 0) {
+                resultDiv.className = 'result incorrect';
+                resultDiv.innerHTML = '⚠️ Debes seleccionar al menos una respuesta';
+                return;
+            }
+            
+            const isCorrect = selected.length === correctAnswers.length &&
+                              selected.every(item => correctAnswers.includes(item));
+            
+            if (isCorrect) {
+                resultDiv.className = 'result correct';
+                resultDiv.innerHTML = '✓ ¡Correcto! Todos los pasos están identificados correctamente.';
+                
+                if (!answeredQuestions.has(exerciseNumber)) {
+                    score++;
+                    answeredQuestions.add(exerciseNumber);
+                    updateScore();
+                }
+            } else {
+                resultDiv.className = 'result incorrect';
+                resultDiv.innerHTML = '✗ Incorrecto. Asegúrate de marcar todos los pasos correctos.';
+            }
+        }
+        
+        function updateScore() {
+            document.getElementById('scoreDisplay').textContent = score + '/10';
+        }
+        
+        function generateCertificateCheck() {
+            if (score >= 8) {
+                showCertificate();
+                goToSection(7);
+            } else {
+                alert(`Necesitas obtener al menos 8/10 para recibir el certificado.\n\nTu puntuación: ${score}/10\n\nRevisa los ejercicios incorrectos y vuelve a intentar.`);
+            }
+        }
+        
+        function showCertificate() {
+            const certificate = document.getElementById('certificate');
+            certificate.classList.add('show');
+            
+            const percentage = Math.round((score / 10) * 100);
+            const gradeText = score === 10 ? '10 de 10 (100% - ¡Perfecto!)' : score + ' de 10 (' + percentage + '%)';
+            
+            document.getElementById('scoreDisplay2').textContent = score + '/10';
+            document.getElementById('scoreText').textContent = gradeText;
+            
+            const today = new Date();
+            const dateString = today.toLocaleDateString('es-CO', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('dateDisplay').textContent = 'el ' + dateString;
+        }
+        
+        function printCertificate() {
+            window.print();
+        }
+        
+        function downloadCertificate() {
+            const certificateDiv = document.getElementById('certificate');
+            const opt = {
+                margin: 10,
+                filename: 'Certificado_Integracion_Trigonometrica.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { orientation: 'landscape', unit: 'mm', format: 'a4' }
+            };
+            
+            // Como no tenemos html2pdf, usamos window.print()
+            alert('Para descargar como PDF, usa: Archivo > Imprimir > Guardar como PDF');
+            window.print();
+        }
+        
+        // Inicializar la primera sección
+        window.onload = function() {
+            updateProgressBar(1);
+        };
+    </script>
+</body>
+</html>
